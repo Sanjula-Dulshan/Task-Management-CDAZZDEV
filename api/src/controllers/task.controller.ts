@@ -1,15 +1,55 @@
-import { RequestHandler } from "express";
+import { Request, RequestHandler, Response } from "express";
 import Joi from "joi";
 import TaskModel from "../models/task.model";
 import { ITask, IUpdateTaskParams } from "../../interfaces/task";
+import { Types } from "mongoose";
 
 // Create a new task
+// export const CreateTask: RequestHandler<
+//   unknown,
+//   unknown,
+//   ITask,
+//   unknown
+// > = async (req, res, next) => {
+//   const Schema = Joi.object({
+//     userId: Joi.string().required(),
+//     title: Joi.string().min(3).max(30).required(),
+//     description: Joi.string().required(),
+//     done: Joi.boolean(),
+//   });
+//   console.log(req.body);
+//   const { error } = Schema.validate(req.body);
+//   if (error) {
+//     res.status(400).send(error.details[0].message);
+//     return;
+//   }
+
+//   const taskData: ITask = {
+//     userId: req.body?.userId,
+//     title: req.body?.title,
+//     description: req.body?.description,
+//     done: req.body?.done,
+//   };
+
+//   const task = new TaskModel(taskData);
+
+//   try {
+//     const savedTask = await task.save();
+//     res.send(savedTask);
+//   } catch (err: any) {
+//     res.status(400).send(err.message);
+//   }
+// };
+
 export const CreateTask: RequestHandler<
   unknown,
   unknown,
   ITask,
   unknown
-> = async (req, res) => {
+> = async (req, res, next) => {
+  console.log("req>>>> ", req.body);
+  //console.log("res>>> ", res);
+
   const Schema = Joi.object({
     userId: Joi.string().required(),
     title: Joi.string().min(3).max(30).required(),
@@ -23,14 +63,12 @@ export const CreateTask: RequestHandler<
     return;
   }
 
-  const taskData: ITask = {
+  const task = new TaskModel({
     userId: req.body?.userId,
-    title: req.body?.title,
-    description: req.body?.description,
-    done: req.body?.done,
-  };
-
-  const task = new TaskModel(taskData);
+    title: req.body.title,
+    description: req.body.description,
+    done: req.body.done,
+  });
 
   try {
     const savedTask = await task.save();
@@ -43,10 +81,13 @@ export const CreateTask: RequestHandler<
 // Get all tasks
 export const GetTasks: RequestHandler = async (req, res): Promise<void> => {
   try {
-    const tasks = await TaskModel.find(
-      { userId: req.params.userId },
-      { __v: 0 }
-    ).sort({ updatedAt: -1 });
+    const userId = new Types.ObjectId(req.params.userId);
+    console.log(userId);
+    const tasks = await TaskModel.find({ userId }, { __v: 0 }).sort({
+      updatedAt: -1,
+    });
+
+    console.log("tasks", tasks);
     res.send(tasks);
   } catch (err: any) {
     res.status(400).send(err.message);
@@ -64,7 +105,7 @@ export const UpdateStatus: RequestHandler<
     const taskId = req.params.id;
     const updatedTask = await TaskModel.findByIdAndUpdate(
       taskId,
-      { $set: { done: true } },
+      { $set: { done: true, last_modified_on: new Date() } },
       { new: true }
     );
 
