@@ -1,29 +1,34 @@
-import React, { useState, ChangeEvent } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { ThreeCircles } from "react-loader-spinner";
-import { ILoginInputs, NOTIFICATION_TYPE } from "../libs/types";
+import { useRouter } from "next/router";
+import { IRegisterInputs, NOTIFICATION_TYPE } from "../../libs/types";
+import { notification } from "../../components/common/Notification";
 import Link from "next/link";
-import { notification } from "../components/common/Notification";
+import { register } from "../../service/Api/Api";
 
-export default function Login() {
-  const [inputs, setInputs] = useState<ILoginInputs>();
+export default function Register() {
+  const [inputs, setInputs] = useState<IRegisterInputs>();
   const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
   };
 
   const validateFields = () => {
-    // Check if required fields are filled
-    if (!inputs.email || !inputs.password) {
+    if (
+      !inputs.name ||
+      !inputs.email ||
+      !inputs.password ||
+      !inputs.cPassword
+    ) {
       notification("All fields are required", NOTIFICATION_TYPE.WARNING);
       return false;
     }
 
-    // Validate email pattern
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(inputs.email)) {
       notification("Invalid email address", NOTIFICATION_TYPE.WARNING);
@@ -33,29 +38,37 @@ export default function Login() {
     return true;
   };
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     if (!validateFields()) {
       return;
     }
+
+    if (inputs.password !== inputs.cPassword) {
+      notification(
+        "Password and confirm password must be same",
+        NOTIFICATION_TYPE.WARNING
+      );
+      return;
+    }
+
+    const { cPassword, ...inputsWithoutCPassword } = inputs;
+
     setIsLoading(true);
-    //   try {
-    //     const response = await login(inputs);
+    const response = await register(inputsWithoutCPassword);
 
-    //     if (response?.status === 200) {
-    //       localStorage.setItem("token", response.data.token);
-    //       localStorage.setItem("userId", response.data.userId);
-
-    //       router.push("/home");
-    //     } else {
-    //       notification(response.response.data, NOTIFICATION_TYPE.ERROR);
-    //     }
-    //   } catch (error) {
-    //     // Handle error
-    //     console.error("Login error:", error);
-    //   } finally {
-    //     setIsLoading(false);
-    //     setInputs({});
-    //   }
+    if (response?.status === 200) {
+      notification("User registered successfully", NOTIFICATION_TYPE.SUCCESS);
+      setInputs({
+        name: "",
+        email: "",
+        password: "",
+        cPassword: "",
+      });
+      router.push("/");
+    } else {
+      notification(response.response.data, NOTIFICATION_TYPE.ERROR);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -74,9 +87,20 @@ export default function Login() {
         />
       ) : (
         <>
-          <h1>Login</h1>
+          <h1>Sign Up</h1>
           <div className="login-wrapper">
             <div className="login-form">
+              <div className="login-input-item">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={inputs?.name || ""}
+                  onChange={handleChange}
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
               <div className="login-input-item">
                 <label>Email:</label>
                 <input
@@ -97,9 +121,20 @@ export default function Login() {
                   placeholder="Enter your password"
                 />
               </div>
+
+              <div className="login-input-item">
+                <label>Confirm Password:</label>
+                <input
+                  type="password"
+                  name="cPassword"
+                  value={inputs?.cPassword || ""}
+                  onChange={handleChange}
+                  placeholder="Confirm your password"
+                />
+              </div>
               <div className="login-input-item login-btn-container ">
-                <button className="login-btn" onClick={handleLogin}>
-                  Login
+                <button className="login-btn" onClick={handleSignUp}>
+                  Sign Up{" "}
                 </button>
                 <p
                   style={{
@@ -108,11 +143,10 @@ export default function Login() {
                     fontSize: "14px",
                   }}
                 >
-                  Don't have an account? Sign up{" "}
-                  <Link href="/register" className="sign-up-txt">
+                  Already have an account? Login{" "}
+                  <Link href="/" className="sign-up-txt">
                     here
                   </Link>
-                  .
                 </p>
               </div>
             </div>
