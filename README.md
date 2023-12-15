@@ -10,7 +10,7 @@ I create a simple MERN stack application that allows users to manage a list of t
 - Delete a task
 - Simple login and register (I create it very simple, because this assessment is not about authentication)
 
-
+I deploy this application to Netlify. You can access it using below link. https://task-management-cdazzdev-sanjula-dulshans-projects.vercel.app/
 
 ## Deployment Instructions
 
