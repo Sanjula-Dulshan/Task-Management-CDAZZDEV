@@ -43,12 +43,10 @@ export const CreateTask: RequestHandler<
 export const GetTasks: RequestHandler = async (req, res): Promise<void> => {
   try {
     const userId = new Types.ObjectId(req.params.userId);
-    console.log(userId);
     const tasks = await TaskModel.find({ userId }, { __v: 0 }).sort({
       updatedAt: -1,
     });
 
-    console.log("tasks", tasks);
     res.send(tasks);
   } catch (err: any) {
     res.status(400).send(err.message);
