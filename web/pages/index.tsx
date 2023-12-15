@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { ThreeCircles } from "react-loader-spinner";
 import { ILoginInputs, NOTIFICATION_TYPE } from "../libs/types";
 import Link from "next/link";
-import { notification } from "../components/common/Notification";
+import { notification } from "../components/Notification";
 import { login } from "../service/Api/Api";
 
 export default function Login() {

@@ -3,7 +3,7 @@ import {
   iNotification as ReactNotification,
 } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-import { NOTIFICATION_TYPE } from "../../libs/types";
+import { NOTIFICATION_TYPE } from "../libs/types";
 
 export const notification = async (title: string, type: NOTIFICATION_TYPE) => {
   const isMobile = window.innerWidth <= 768; // Adjust the breakpoint as needed

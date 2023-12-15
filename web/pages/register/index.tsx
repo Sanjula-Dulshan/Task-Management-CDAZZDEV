@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ThreeCircles } from "react-loader-spinner";
 import { useRouter } from "next/router";
 import { IRegisterInputs, NOTIFICATION_TYPE } from "../../libs/types";
-import { notification } from "../../components/common/Notification";
+import { notification } from "../../components/Notification";
 import Link from "next/link";
 import { register } from "../../service/Api/Api";
 
