@@ -1,0 +1,58 @@
+{
+  "navbar": {
+    "app-name": "Task App",
+    "home": "Home",
+    "logout": "Logout"
+  },
+
+  "task": {
+    "title": "My Task",
+    "add-new": {
+      "title": "Title",
+      "title-placeholder": "Title of the task",
+      "description": "Description",
+      "description-placeholder": "Description of the task",
+      "add-btn": "Add"
+    },
+    "to-do": "To Do",
+    "completed": "Completed",
+    "completed-at": "Completed at: "
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email:",
+    "email-placeholder": "Enter your email",
+    "password": "Password:",
+    "password-placeholder": "Enter your password",
+    "login-btn": "Login",
+    "sign-up-txt": "Don't have an account? Sign up ",
+    "sign-up-link": "here"
+  },
+  "sign-up": {
+    "title": "Sign Up",
+    "name": "Name:",
+    "name-placeholder": "Enter your name",
+    "email": "Email:",
+    "email-placeholder": "Enter your email",
+    "password": "Password:",
+    "password-placeholder": "Enter your password",
+    "confirm-password": "Confirm Password:",
+    "confirm-password-placeholder": "Confirm your password",
+    "sign-up-btn": "Sign Up",
+    "login-txt": "Already have an account? Login ",
+    "login-link": "here"
+  },
+  "alert": {
+    "error": {
+      "required": "All fields are required",
+      "email": "Invalid email address",
+      "confirm-password": "Password and confirm password must be same"
+    },
+    "success": {
+      "task-added": "Task added successfully",
+      "user-register": "User registered successfully",
+      "task-completed": "Task completed successfully",
+      "task-deleted": "Task deleted successfully"
+    }
+  }
+}

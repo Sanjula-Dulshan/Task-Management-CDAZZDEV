@@ -1,16 +1,16 @@
 import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
 import { ThreeCircles } from "react-loader-spinner";
 import { IInputs, NOTIFICATION_TYPE } from "../libs/types";
 import Link from "next/link";
 import { notification } from "../components/common/Notification";
+import { useTranslation } from "next-i18next";
 
 export default function LoginComponent() {
   const [inputs, setInputs] = useState<IInputs>();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t } = useTranslation("footer");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
