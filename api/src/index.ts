@@ -3,9 +3,7 @@ import dotenv from "dotenv";
 import DatabaseSingleton from "../config/connectDB";
 import taskRoutes from "./routes/task.routes";
 import userRoutes from "./routes/user.routes";
-
-
-
+import cors from "cors";
 
 dotenv.config();
 DatabaseSingleton.getInstance();
@@ -13,8 +11,7 @@ DatabaseSingleton.getInstance();
 const app: Express = express();
 const port = process.env.PORT;
 
-
-
+app.use(cors());
 app.use(express.json());
 app.use("/api/tasks", taskRoutes);
 app.use("/api", userRoutes);
