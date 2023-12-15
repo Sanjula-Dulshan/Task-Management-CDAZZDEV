@@ -4,6 +4,7 @@ import { ThreeCircles } from "react-loader-spinner";
 import { ILoginInputs, NOTIFICATION_TYPE } from "../libs/types";
 import Link from "next/link";
 import { notification } from "../components/common/Notification";
+import { login } from "../service/Api/Api";
 
 export default function Login() {
   const [inputs, setInputs] = useState<ILoginInputs>();
@@ -18,7 +19,7 @@ export default function Login() {
 
   const validateFields = () => {
     // Check if required fields are filled
-    if (!inputs.email || !inputs.password) {
+    if (!inputs?.email || !inputs?.password) {
       notification("All fields are required", NOTIFICATION_TYPE.WARNING);
       return false;
     }
@@ -38,24 +39,27 @@ export default function Login() {
       return;
     }
     setIsLoading(true);
-    //   try {
-    //     const response = await login(inputs);
+    try {
+      const response = await login(inputs);
 
-    //     if (response?.status === 200) {
-    //       localStorage.setItem("token", response.data.token);
-    //       localStorage.setItem("userId", response.data.userId);
+      if (response?.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.userId);
 
-    //       router.push("/home");
-    //     } else {
-    //       notification(response.response.data, NOTIFICATION_TYPE.ERROR);
-    //     }
-    //   } catch (error) {
-    //     // Handle error
-    //     console.error("Login error:", error);
-    //   } finally {
-    //     setIsLoading(false);
-    //     setInputs({});
-    //   }
+        router.push("/home");
+      } else {
+        notification(response.response.data, NOTIFICATION_TYPE.ERROR);
+      }
+    } catch (error) {
+      // Handle error
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+      setInputs({
+        email: "",
+        password: "",
+      });
+    }
   };
 
   return (

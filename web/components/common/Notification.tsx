@@ -21,7 +21,7 @@ export const notification = async (title: string, type: NOTIFICATION_TYPE) => {
       onScreen: true,
       showIcon: true,
     },
-    width: isMobile ? 800 : 400,
+    width: isMobile ? 350 : 400,
   };
 
   Store.addNotification(notificationOptions);
