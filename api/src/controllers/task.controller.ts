@@ -4,52 +4,13 @@ import TaskModel from "../models/task.model";
 import { ITask, IUpdateTaskParams } from "../../interfaces/task";
 import { Types } from "mongoose";
 
-// Create a new task
-// export const CreateTask: RequestHandler<
-//   unknown,
-//   unknown,
-//   ITask,
-//   unknown
-// > = async (req, res, next) => {
-//   const Schema = Joi.object({
-//     userId: Joi.string().required(),
-//     title: Joi.string().min(3).max(30).required(),
-//     description: Joi.string().required(),
-//     done: Joi.boolean(),
-//   });
-//   console.log(req.body);
-//   const { error } = Schema.validate(req.body);
-//   if (error) {
-//     res.status(400).send(error.details[0].message);
-//     return;
-//   }
-
-//   const taskData: ITask = {
-//     userId: req.body?.userId,
-//     title: req.body?.title,
-//     description: req.body?.description,
-//     done: req.body?.done,
-//   };
-
-//   const task = new TaskModel(taskData);
-
-//   try {
-//     const savedTask = await task.save();
-//     res.send(savedTask);
-//   } catch (err: any) {
-//     res.status(400).send(err.message);
-//   }
-// };
-
+// Create a task
 export const CreateTask: RequestHandler<
   unknown,
   unknown,
   ITask,
   unknown
-> = async (req, res, next) => {
-  console.log("req>>>> ", req.body);
-  //console.log("res>>> ", res);
-
+> = async (req, res) => {
   const Schema = Joi.object({
     userId: Joi.string().required(),
     title: Joi.string().min(3).max(30).required(),
