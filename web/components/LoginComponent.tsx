@@ -2,9 +2,9 @@ import React, { useState, ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { ThreeCircles } from "react-loader-spinner";
+import { notification } from "./common/Notification";
 import { IInputs, NOTIFICATION_TYPE } from "../libs/types";
 import Link from "next/link";
-import { notification } from "../components/common/Notification";
 
 export default function LoginComponent() {
   const [inputs, setInputs] = useState<IInputs>();
@@ -84,7 +84,7 @@ export default function LoginComponent() {
                 <input
                   type="email"
                   name="email"
-                  value={inputs?.email || ""}
+                  value={inputs.email || ""}
                   onChange={handleChange}
                   placeholder={t("login.email-placeholder")}
                 />
@@ -94,7 +94,7 @@ export default function LoginComponent() {
                 <input
                   type="password"
                   name="password"
-                  value={inputs?.password || ""}
+                  value={inputs.password || ""}
                   onChange={handleChange}
                   placeholder={t("login.password-placeholder")}
                 />
@@ -111,8 +111,8 @@ export default function LoginComponent() {
                   }}
                 >
                   {t("login.sign-up-txt")}
-                  <Link href="/register" className="sign-up-txt">
-                    {t("login.sign-up-link")}
+                  <Link href="/register" passHref>
+                    <a className="sign-up-txt">{t("login.sign-up-link")}</a>
                   </Link>
                   .
                 </p>
