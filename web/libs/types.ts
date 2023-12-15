@@ -16,3 +16,18 @@ export interface IRegisterInputs {
   password: string;
   cPassword: string;
 }
+
+export interface ITaskProps {
+  item: ITask;
+  handleComplete: (taskId: string) => void;
+  handleDelete: (taskId: string) => void;
+  isCompleted: boolean;
+}
+
+export interface ITask {
+  _id: string;
+  title: string;
+  description: string;
+  done?: boolean;
+  updatedAt?: string;
+}
