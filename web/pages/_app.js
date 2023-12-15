@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.css";
 import "../styles/globals.css";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";

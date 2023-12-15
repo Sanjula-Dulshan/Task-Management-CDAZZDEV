@@ -261,11 +261,9 @@ h1 {
 }
 
 .logout {
-  border-radius: 5px;
   border: none;
   cursor: pointer;
-  text-decoration: none;
-  color: initial;
+  background: transparent;
 }
 
 @media screen and (max-width: 700px) {

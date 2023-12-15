@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { ThreeCircles } from "react-loader-spinner";
 import { ILoginInputs, NOTIFICATION_TYPE } from "../libs/types";
@@ -11,7 +11,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
@@ -112,7 +112,7 @@ export default function Login() {
                     fontSize: "14px",
                   }}
                 >
-                  Don't have an account? Sign up{" "}
+                  Don&apos;t have an account? Sign up{" "}
                   <Link href="/register" className="sign-up-txt">
                     here
                   </Link>

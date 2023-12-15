@@ -28,6 +28,10 @@ export default function Task({
           <div>
             <h3>{item?.title}</h3>
             <p>{item?.description}</p>
+            <p>
+              {"Created at: "}
+              {moment(item?.created_on).format("YYYY/MM/DD h:mm A")}
+            </p>
           </div>
           <div>
             <AiOutlineDelete
@@ -51,7 +55,7 @@ export default function Task({
             <p>{item?.description}</p>
             <p>
               {"Completed at: "}
-              {moment(item?.updatedAt).format("YYYY/MM/DD h:mm A")}
+              {moment(item?.last_modified_on).format("YYYY/MM/DD h:mm A")}
             </p>
           </div>
           <div>

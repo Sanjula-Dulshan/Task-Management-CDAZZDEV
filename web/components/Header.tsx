@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 function Header() {
+  const router = useRouter();
+
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/";
+    router.push("/");
   };
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -31,14 +34,14 @@ function Header() {
                 aria-current="page"
                 href={"/home"}
               >
-                Home{" "}
+                Home
               </Link>
             </li>
           </ul>
 
-          <Link className="logout" href="#">
-            <a onClick={handleLogout}>Logout</a>{" "}
-          </Link>
+          <button className="logout" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       </div>
     </nav>

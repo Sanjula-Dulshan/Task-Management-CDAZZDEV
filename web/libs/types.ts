@@ -17,6 +17,11 @@ export interface IRegisterInputs {
   cPassword: string;
 }
 
+export interface ITaskInputs {
+  title: string;
+  description: string;
+}
+
 export interface ITaskProps {
   item: ITask;
   handleComplete: (taskId: string) => void;
@@ -29,5 +34,6 @@ export interface ITask {
   title: string;
   description: string;
   done?: boolean;
-  updatedAt?: string;
+  last_modified_on?: string;
+  created_on?: string;
 }
