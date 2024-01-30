@@ -3,7 +3,7 @@ import Joi from "joi";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/user.model";
-import { ILoginBody, IUser } from "../../interfaces/user";
+import { ILoginBody, ITokenPayload, IUser } from "../../interfaces/user";
 
 export const Register: RequestHandler<
   unknown,
@@ -67,7 +67,72 @@ export const Login: RequestHandler<
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Email or password is wrong");
 
-  // create a token and assign it to the header
-  const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET || "");
-  res.send({ token, userId: user._id });
+  try {
+    //refresh token
+    const refresh_token = createRefreshToken({ id: user._id });
+    res.cookie("refreshtoken", refresh_token, {
+      httpOnly: true,
+      path: "/api/refresh_token",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return res.status(200).send({
+      userId: user._id,
+    });
+  } catch (err: any) {
+    res.status(400).send(err.message);
+  }
+};
+
+//Logout user
+export const logout: RequestHandler<
+  unknown,
+  unknown,
+  ILoginBody,
+  unknown
+> = async (req, res) => {
+  try {
+    res.clearCookie("refreshtoken", { path: "/api/refresh_token" });
+    return res.send("Logged out.");
+  } catch (err: any) {
+    return res.status(500).send(err.message);
+  }
+};
+
+//get access token
+export const getAccessToken: RequestHandler = async (req, res) => {
+  console.log("re", req.cookies);
+
+  const rf_token = req.cookies.refreshtoken;
+  if (!rf_token) return res.status(400).send("Please login now!");
+
+  jwt.verify(
+    rf_token,
+    process.env.REFRESH_TOKEN_SECRET || "",
+    (err: any, user: any) => {
+      if (err) return res.status(400).send("Please login now!");
+
+      const access_token = createAccessToken({ id: user.id });
+      res.send({ access_token });
+    }
+  );
+};
+
+//Create refresh token
+const createRefreshToken = (payload: ITokenPayload) => {
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET || "", {
+    expiresIn: "7d",
+  });
+};
+
+//Create access token
+const createAccessToken = (payload: ITokenPayload) => {
+  console.log("payload", payload);
+  console.log(
+    "process.env.ACCESS_TOKEN_SECRET",
+    process.env.ACCESS_TOKEN_SECRET
+  );
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET || "", {
+    expiresIn: "15m",
+  });
 };
